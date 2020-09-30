@@ -33,6 +33,13 @@ class Bloc {
       File voterId,
       File graduationCertificate,
       File signature) {
+    List<File> list = new List();
+    list.add(profilePic);
+    list.add(aadharCard);
+    list.add(voterId);
+    list.add(graduationCertificate);
+    list.add(signature);
+    uploadImages(list);
 
   }
 
