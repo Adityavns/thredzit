@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thredzit/bloc.dart';
 
 class NewEnrollment extends StatefulWidget {
   final String selectedLanguage;
@@ -13,13 +14,14 @@ class NewEnrollment extends StatefulWidget {
 
 class _NewEnrollmentState extends State<NewEnrollment> {
   final _formKey = GlobalKey<FormState>();
+  Bloc bloc = Bloc.getInstance();
 
   File _profilePic;
   File _aadharCard;
   File _voterId;
   File _graduationCertificate;
   File _signature;
-  
+
   static const int NAME = 1;
   static const int GUARDIAN_NAME = 2;
   static const int QUALIFICATION = 3;
@@ -39,7 +41,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   static const int YEAR = 17;
 
   static const String PROFILE_PIC = "profile";
-  static const String AADHAR_COPY = "aadhaar";
+  static const String AADHAAR_COPY = "aadhaar";
   static const String VOTER_ID = "voterId";
   static const String GRADUATION_CERTIFICATE = "graduationCertificate";
   static const String SIGNATURE = "signature";
@@ -119,7 +121,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
           case PROFILE_PIC:
             _profilePic = File(pickedFile.path);
             break;
-          case AADHAR_COPY:
+          case AADHAAR_COPY:
             _aadharCard = File(pickedFile.path);
             break;
           case VOTER_ID:
@@ -183,13 +185,12 @@ class _NewEnrollmentState extends State<NewEnrollment> {
             if (value.isEmpty)
               return "Enter Email";
             else {
-              if (!isValidEmail(value))
-                return "Enter valid email";
+              if (!isValidEmail(value)) return "Enter valid email";
             }
-          }else if(labelText=="Phone Number" || labelText=="Alternate Phone Number"){
+          } else if (labelText == "Phone Number" ||
+              labelText == "Alternate Phone Number") {
             return validateMobile(value);
-          }
-          else {
+          } else {
             if (value.isEmpty) {
               return 'Please enter some text';
             }
@@ -206,8 +207,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return 'Please enter mobile number';
-    }
-    else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value)) {
       return 'Please enter valid mobile number';
     }
     return null;
@@ -217,71 +217,81 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     switch (value) {
       case 1:
         {
-          return widget.selectedLanguage=="English"?"Full Name":"";
+          return widget.selectedLanguage == "English" ? "Full Name" : "";
         }
       case 2:
         {
-          return widget.selectedLanguage=="English"?"Father's/Mother's/Husband's name":"";
+          return widget.selectedLanguage == "English"
+              ? "Father's/Mother's/Husband's name"
+              : "";
         }
       case 3:
         {
-          return widget.selectedLanguage=="English"?"Qualification":"";
+          return widget.selectedLanguage == "English" ? "Qualification" : "";
         }
       case 4:
         {
-          return widget.selectedLanguage=="English"?"Aadhaar Number":"";
+          return widget.selectedLanguage == "English" ? "Aadhaar Number" : "";
         }
       case 5:
         {
-          return widget.selectedLanguage=="English"?"Occupation":"";
+          return widget.selectedLanguage == "English" ? "Occupation" : "";
         }
       case 6:
         {
-          return widget.selectedLanguage=="English"?"House Number":"";
+          return widget.selectedLanguage == "English" ? "House Number" : "";
         }
       case 7:
         {
-          return widget.selectedLanguage=="English"?"Street":"";
+          return widget.selectedLanguage == "English" ? "Street" : "";
         }
       case 8:
         {
-          return widget.selectedLanguage=="English"?"Town/Village":"";
+          return widget.selectedLanguage == "English" ? "Town/Village" : "";
         }
       case 9:
         {
-          return widget.selectedLanguage=="English"?"District":"";
+          return widget.selectedLanguage == "English" ? "District" : "";
         }
       case 10:
         {
-          return widget.selectedLanguage=="English"?"Postal Pin Code":"";
+          return widget.selectedLanguage == "English" ? "Postal Pin Code" : "";
         }
       case 11:
         {
-          return widget.selectedLanguage=="English"?"Police Station/Tehsil/Taluka/Mouza":"";
+          return widget.selectedLanguage == "English"
+              ? "Police Station/Tehsil/Taluka/Mouza"
+              : "";
         }
       case 12:
         {
-          return widget.selectedLanguage=="English"?"Age":"";
+          return widget.selectedLanguage == "English" ? "Age" : "";
         }
       case 13:
         {
-          return widget.selectedLanguage=="English"?"Phone Number":"";
+          return widget.selectedLanguage == "English" ? "Phone Number" : "";
         }
       case 14:
         {
-          return widget.selectedLanguage=="English"?"Alternate Phone Number":"";
+          return widget.selectedLanguage == "English"
+              ? "Alternate Phone Number"
+              : "";
         }
       case 15:
         {
-          return widget.selectedLanguage=="English"?"Email":"";
+          return widget.selectedLanguage == "English" ? "Email" : "";
         }
       case 16:
         {
-          return widget.selectedLanguage=="English"?"Graduation College":"గ్రాడ్యుయేషన్ కళాశాల";
+          return widget.selectedLanguage == "English"
+              ? "Graduation College"
+              : "గ్రాడ్యుయేషన్ కళాశాల";
         }
       case 17:
         {
-          return widget.selectedLanguage=="English"?"Graduation Year":"పట్టభద్రతపొందు సంవత్సరం";
+          return widget.selectedLanguage == "English"
+              ? "Graduation Year"
+              : "పట్టభద్రతపొందు సంవత్సరం";
         }
       default:
         {
@@ -365,7 +375,6 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   }
 
   void showAlertDialog(BuildContext context) {
-
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
@@ -398,16 +407,43 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       children: <Widget>[
         RaisedButton(
           color: Colors.yellow,
-          onPressed: !checkedValue?null:() {
-            if (_formKey.currentState.validate()) {
-              if(_profilePic!=null && _voterId!=null && _graduationCertificate!=null && _aadharCard!=null && _signature!=null){
-
-              }
-              else{
-                showAlertDialog(context);
-              }
-            }
-          },
+          onPressed: !checkedValue
+              ? null
+              : () {
+                  if (_formKey.currentState.validate()) {
+                    if (_profilePic != null &&
+                        _voterId != null &&
+                        _graduationCertificate != null &&
+                        _aadharCard != null &&
+                        _signature != null) {
+                      bloc.enrollNewForm(
+                          nameController.text,
+                          guardianNameController.text,
+                          qualificationController.text,
+                          occupationController.text,
+                          houseNumberController.text,
+                          streetController.text,
+                          townController.text,
+                          postalCodeController.text,
+                          policeStationController.text,
+                          districtController.text,
+                          ageController.text,
+                          contactNumberController.text,
+                          alternateNumberController.text,
+                          emailIdController.text,
+                          graduationType,
+                          graduationYear.text,
+                          gender,
+                          _profilePic,
+                          _aadharCard,
+                          _voterId,
+                          _graduationCertificate,
+                          _signature);
+                    } else {
+                      showAlertDialog(context);
+                    }
+                  }
+                },
           child: Text(
             "Enroll",
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -420,7 +456,10 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   Widget getGender() {
     return Row(
       children: <Widget>[
-        Text("Gender",style: TextStyle(fontSize: 15),),
+        Text(
+          "Gender",
+          style: TextStyle(fontSize: 15),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -434,25 +473,28 @@ class _NewEnrollmentState extends State<NewEnrollment> {
 
   Row getGenders(String value) {
     return Row(
-        children: <Widget>[
-          Radio(
-            value: value,
-            groupValue: gender,
-            onChanged: (value) {
-              setState(() {
-                gender = value;
-              });
-            },
-          ),
-          Text(value)
-        ],
-      );
+      children: <Widget>[
+        Radio(
+          value: value,
+          groupValue: gender,
+          onChanged: (value) {
+            setState(() {
+              gender = value;
+            });
+          },
+        ),
+        Text(value)
+      ],
+    );
   }
 
   Widget getGraduationType() {
     return Row(
       children: <Widget>[
-        Text("Graduation Type",style: TextStyle(fontSize: 15),),
+        Text(
+          "Graduation Type",
+          style: TextStyle(fontSize: 15),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -487,12 +529,13 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         getTextField(
             getLabelText(NAME), "", nameController, TextInputType.text),
         getGender(),
-        getTextField(getLabelText(GUARDIAN_NAME), "",
-            guardianNameController, TextInputType.text),
-        getTextField(getLabelText(AADHAAR), "", aadhaarController,
-            TextInputType.number,maxLength: 12),
-        getTextField(getLabelText(QUALIFICATION), "",
-            qualificationController, TextInputType.text),
+        getTextField(getLabelText(GUARDIAN_NAME), "", guardianNameController,
+            TextInputType.text),
+        getTextField(
+            getLabelText(AADHAAR), "", aadhaarController, TextInputType.number,
+            maxLength: 12),
+        getTextField(getLabelText(QUALIFICATION), "", qualificationController,
+            TextInputType.text),
         getTextField(getLabelText(OCCUPATION), "", occupationController,
             TextInputType.text)
       ],
@@ -508,12 +551,13 @@ class _NewEnrollmentState extends State<NewEnrollment> {
             getLabelText(STREET), "", streetController, TextInputType.text),
         getTextField(
             getLabelText(TOWN), "", townController, TextInputType.text),
-        getTextField(getLabelText(DISTRICT), "", districtController,
-            TextInputType.text),
+        getTextField(
+            getLabelText(DISTRICT), "", districtController, TextInputType.text),
         getTextField(getLabelText(PIN_CODE), "", postalCodeController,
-            TextInputType.number,maxLength: 6),
-        getTextField(getLabelText(POLICE_STATION), "",
-            policeStationController, TextInputType.text),
+            TextInputType.number,
+            maxLength: 6),
+        getTextField(getLabelText(POLICE_STATION), "", policeStationController,
+            TextInputType.text),
       ],
     );
   }
@@ -523,10 +567,12 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       children: <Widget>[
         getTextField(
             getLabelText(AGE), "", ageController, TextInputType.number),
-        getTextField(getLabelText(PHONE_NUMBER), "",
-            contactNumberController, TextInputType.phone,maxLength: 10),
+        getTextField(getLabelText(PHONE_NUMBER), "", contactNumberController,
+            TextInputType.phone,
+            maxLength: 10),
         getTextField(getLabelText(ALTERNATE_PHONE_NUMBER), "",
-            alternateNumberController, TextInputType.phone,maxLength: 10),
+            alternateNumberController, TextInputType.phone,
+            maxLength: 10),
         getTextField(getLabelText(EMAIL), "", emailIdController,
             TextInputType.emailAddress),
       ],
@@ -536,8 +582,8 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   Widget getCollegeDetails() {
     return Column(
       children: <Widget>[
-        getTextField(getLabelText(COLLEGE), "", collegeController,
-            TextInputType.text),
+        getTextField(
+            getLabelText(COLLEGE), "", collegeController, TextInputType.text),
         getTextField(
             getLabelText(YEAR), "", graduationYear, TextInputType.number),
       ],
@@ -551,7 +597,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
             "Upload Passport Size Photo Only!", PROFILE_PIC, _profilePic),
         getDivider(),
         getButtonAndImage("Upload Aadhaar", "Upload Aadhaar Scanned Copy",
-            AADHAR_COPY, _aadharCard),
+            AADHAAR_COPY, _aadharCard),
         getDivider(),
         getButtonAndImage("Upload Voter ID", "Upload Voter Id Scanned Copy",
             VOTER_ID, _voterId),
@@ -562,8 +608,8 @@ class _NewEnrollmentState extends State<NewEnrollment> {
             GRADUATION_CERTIFICATE,
             _graduationCertificate),
         getDivider(),
-        getButtonAndImage("Upload Signature", "Upload Your Signature",
-            SIGNATURE, _signature),
+        getButtonAndImage(
+            "Upload Signature", "Upload Your Signature", SIGNATURE, _signature),
       ],
     );
   }
