@@ -3,35 +3,82 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class MyHomePage extends StatefulWidget {
-  static const int profilePic = 0;
-  static const int aadhar = 1;
-  static const int voter = 2;
-  static const int grad = 3;
-  static const int signature = 4;
+class NewEnrollment extends StatefulWidget {
+  final String selectedLanguage;
+  NewEnrollment(this.selectedLanguage);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NewEnrollmentState createState() => _NewEnrollmentState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NewEnrollmentState extends State<NewEnrollment> {
+  final _formKey = GlobalKey<FormState>();
+
   File _profilePic;
   File _aadharCard;
   File _voterId;
   File _graduationCertificate;
   File _signature;
+  
+  static const int NAME = 1;
+  static const int GUARDIAN_NAME = 2;
+  static const int QUALIFICATION = 3;
+  static const int AADHAAR = 4;
+  static const int OCCUPATION = 5;
+  static const int HOUSE_NUMBER = 6;
+  static const int STREET = 7;
+  static const int TOWN = 8;
+  static const int DISTRICT = 9;
+  static const int PIN_CODE = 10;
+  static const int POLICE_STATION = 11;
+  static const int AGE = 12;
+  static const int PHONE_NUMBER = 13;
+  static const int ALTERNATE_PHONE_NUMBER = 14;
+  static const int EMAIL = 15;
+  static const int COLLEGE = 16;
+  static const int YEAR = 17;
+
+  static const String PROFILE_PIC = "profile";
+  static const String AADHAR_COPY = "aadhaar";
+  static const String VOTER_ID = "voterId";
+  static const String GRADUATION_CERTIFICATE = "graduationCertificate";
+  static const String SIGNATURE = "signature";
 
   final picker = ImagePicker();
 
   bool voterId = true;
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController guardianNameController = new TextEditingController();
+  TextEditingController aadhaarController = new TextEditingController();
+  TextEditingController qualificationController = new TextEditingController();
+  TextEditingController occupationController = new TextEditingController();
+  TextEditingController houseNumberController = new TextEditingController();
+  TextEditingController streetController = new TextEditingController();
+  TextEditingController townController = new TextEditingController();
+  TextEditingController districtController = new TextEditingController();
+  TextEditingController postalCodeController = new TextEditingController();
+  TextEditingController policeStationController = new TextEditingController();
+  TextEditingController ageController = new TextEditingController();
+  TextEditingController contactNumberController = new TextEditingController();
+  TextEditingController alternateNumberController = new TextEditingController();
+  TextEditingController emailIdController = new TextEditingController();
+  TextEditingController collegeController = new TextEditingController();
+  TextEditingController graduationYear = new TextEditingController();
 
-  TextEditingController mobileNumberController = new TextEditingController();
+  bool checkedValue = false;
+
+  var gender = "Male";
+
+  var graduationType = "Degree";
+
+  /*TextEditingController mobileNumberController = new TextEditingController();
   TextEditingController alternativeMobileNumberController =
-      new TextEditingController();
+      new TextEditingController();*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Survey"),
+        title: Text("New Enrollment"),
       ),
       body: getBody(),
     );
@@ -39,121 +86,49 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget getBody() {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text("Upload Profile Pic"),
-            trailing: Visibility(
-              visible: _profilePic != null,
-              child: new Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
-            ),
-            onTap: () => getDialog(MyHomePage.profilePic),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              getPersonalDetails(),
+              getAddressDetails(),
+              getContactDetails(),
+              getGraduationType(),
+              getCollegeDetails(),
+              getDivider(),
+              getScannedCopies(),
+              getDivider(),
+              getCheckBox(),
+              getDivider(),
+              getEnrollButton(),
+              getDivider()
+            ],
           ),
-          ListTile(
-            title: Text("Upload Aadhar card"),
-            trailing: Visibility(
-              visible: _aadharCard != null,
-              child: new Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
-            ),
-            onTap: () => getDialog(MyHomePage.aadhar),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CheckboxListTile(
-              title: Text("Do you have Voter Id"),
-              value: voterId,
-              onChanged: (bool value) {
-                setState(() {
-                  voterId = value;
-                });
-              },
-            ),
-          ),
-          Visibility(
-            visible: voterId,
-            child: ListTile(
-              title: Text("Upload Voter ID"),
-              onTap: () => getDialog(MyHomePage.voter),
-              trailing: Visibility(
-                visible: _voterId != null,
-                child: new Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            child: TextFormField(
-              controller: mobileNumberController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Enter Mobile Number",
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-            child: TextFormField(
-              controller: mobileNumberController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Enter alternative Mobile Number",
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text("Upload Graduation/Diploma Certificates"),
-            trailing: Visibility(
-              visible: _graduationCertificate != null,
-              child: new Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
-            ),
-            onTap: () => getDialog(MyHomePage.grad),
-          ),
-          ListTile(
-            trailing: Visibility(
-              visible: _signature != null,
-              child: new Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
-            ),
-            title: Text("Upload Signature"),
-            onTap: () => getDialog(MyHomePage.signature),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Future getImage(ImageSource source, int file) async {
+  Future getImage(ImageSource source, String imageType) async {
     final pickedFile = await picker.getImage(source: source);
     setState(() {
       if (pickedFile != null) {
-        switch (file) {
-          case MyHomePage.profilePic:
+        switch (imageType) {
+          case PROFILE_PIC:
             _profilePic = File(pickedFile.path);
             break;
-          case MyHomePage.aadhar:
+          case AADHAR_COPY:
             _aadharCard = File(pickedFile.path);
             break;
-          case MyHomePage.voter:
+          case VOTER_ID:
             _voterId = File(pickedFile.path);
             break;
-          case MyHomePage.grad:
+          case GRADUATION_CERTIFICATE:
             _graduationCertificate = File(pickedFile.path);
             break;
-          case MyHomePage.signature:
+          case SIGNATURE:
             _signature = File(pickedFile.path);
             break;
         }
@@ -164,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pop(context);
   }
 
-  void getDialog(int whatToSave) {
+  void getDialog(String imageType) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -175,11 +150,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   RaisedButton(
-                    onPressed: () => getImage(ImageSource.camera, whatToSave),
+                    onPressed: () => getImage(ImageSource.camera, imageType),
                     child: Text("Camera"),
                   ),
                   RaisedButton(
-                    onPressed: () => getImage(ImageSource.gallery, whatToSave),
+                    onPressed: () => getImage(ImageSource.gallery, imageType),
                     child: Text("Gallery"),
                   ),
                 ],
@@ -187,5 +162,409 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           );
         });
+  }
+
+  Widget getTextField(String labelText, String hintText,
+      TextEditingController controller, TextInputType type,
+      {int maxLength}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: new TextFormField(
+        keyboardType: type,
+        maxLength: maxLength,
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: TextStyle(color: Colors.black),
+          hintText: hintText,
+          hintStyle: TextStyle(fontSize: 15.0, color: Colors.black45),
+        ),
+        validator: (value) {
+          if (labelText == "Email") {
+            if (value.isEmpty)
+              return "Enter Email";
+            else {
+              if (!isValidEmail(value))
+                return "Enter valid email";
+            }
+          }else if(labelText=="Phone Number" || labelText=="Alternate Phone Number"){
+            return validateMobile(value);
+          }
+          else {
+            if (value.isEmpty) {
+              return 'Please enter some text';
+            }
+          }
+          return null;
+        },
+        controller: controller,
+      ),
+    );
+  }
+
+  String validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return 'Please enter mobile number';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+    return null;
+  }
+
+  String getLabelText(int value) {
+    switch (value) {
+      case 1:
+        {
+          return widget.selectedLanguage=="English"?"Full Name":"";
+        }
+      case 2:
+        {
+          return widget.selectedLanguage=="English"?"Father's/Mother's/Husband's name":"";
+        }
+      case 3:
+        {
+          return widget.selectedLanguage=="English"?"Qualification":"";
+        }
+      case 4:
+        {
+          return widget.selectedLanguage=="English"?"Aadhaar Number":"";
+        }
+      case 5:
+        {
+          return widget.selectedLanguage=="English"?"Occupation":"";
+        }
+      case 6:
+        {
+          return widget.selectedLanguage=="English"?"House Number":"";
+        }
+      case 7:
+        {
+          return widget.selectedLanguage=="English"?"Street":"";
+        }
+      case 8:
+        {
+          return widget.selectedLanguage=="English"?"Town/Village":"";
+        }
+      case 9:
+        {
+          return widget.selectedLanguage=="English"?"District":"";
+        }
+      case 10:
+        {
+          return widget.selectedLanguage=="English"?"Postal Pin Code":"";
+        }
+      case 11:
+        {
+          return widget.selectedLanguage=="English"?"Police Station/Tehsil/Taluka/Mouza":"";
+        }
+      case 12:
+        {
+          return widget.selectedLanguage=="English"?"Age":"";
+        }
+      case 13:
+        {
+          return widget.selectedLanguage=="English"?"Phone Number":"";
+        }
+      case 14:
+        {
+          return widget.selectedLanguage=="English"?"Alternate Phone Number":"";
+        }
+      case 15:
+        {
+          return widget.selectedLanguage=="English"?"Email":"";
+        }
+      case 16:
+        {
+          return widget.selectedLanguage=="English"?"Graduation College":"గ్రాడ్యుయేషన్ కళాశాల";
+        }
+      case 17:
+        {
+          return widget.selectedLanguage=="English"?"Graduation Year":"పట్టభద్రతపొందు సంవత్సరం";
+        }
+      default:
+        {
+          return null;
+        }
+    }
+  }
+
+  bool isValidEmail(String em) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(p);
+    return regExp.hasMatch(em);
+  }
+
+  Widget getDivider() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: Container(),
+    );
+  }
+
+  Widget getButtonAndImage(
+      String buttonTitle, String textTitle, String imageType, File file) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.yellow, width: 5),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            file == null
+                ? Container(
+                    height: 150,
+                    child: Center(child: Text(textTitle)),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Image.file(
+                        File(
+                          file.path,
+                        ),
+                        height: 150,
+                      ),
+                    ),
+                  ),
+            FlatButton(
+              color: Colors.yellow,
+              child: Text(buttonTitle),
+              onPressed: () {
+                getDialog(imageType);
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getCheckBox() {
+    return Row(
+      children: <Widget>[
+        Checkbox(
+          checkColor: Colors.black,
+          value: checkedValue,
+          onChanged: (bool value) {
+            setState(() {
+              checkedValue = value;
+            });
+          },
+        ),
+        Expanded(
+          child: Text(
+              "I declare that I am a citizen of India and that all the particulars given above are true to the best of my knowledge."),
+        )
+      ],
+    );
+  }
+
+  void showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Warning!"),
+      content: Text("Upload all the Certificates"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Widget getEnrollButton() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        RaisedButton(
+          color: Colors.yellow,
+          onPressed: !checkedValue?null:() {
+            if (_formKey.currentState.validate()) {
+              if(_profilePic!=null && _voterId!=null && _graduationCertificate!=null && _aadharCard!=null && _signature!=null){
+
+              }
+              else{
+                showAlertDialog(context);
+              }
+            }
+          },
+          child: Text(
+            "Enroll",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget getGender() {
+    return Row(
+      children: <Widget>[
+        Text("Gender",style: TextStyle(fontSize: 15),),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            getGenders("Male"),
+            getGenders("Female"),
+          ],
+        )
+      ],
+    );
+  }
+
+  Row getGenders(String value) {
+    return Row(
+        children: <Widget>[
+          Radio(
+            value: value,
+            groupValue: gender,
+            onChanged: (value) {
+              setState(() {
+                gender = value;
+              });
+            },
+          ),
+          Text(value)
+        ],
+      );
+  }
+
+  Widget getGraduationType() {
+    return Row(
+      children: <Widget>[
+        Text("Graduation Type",style: TextStyle(fontSize: 15),),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            graduationTypes("Degree"),
+            graduationTypes("Diploma"),
+          ],
+        )
+      ],
+    );
+  }
+
+  Row graduationTypes(String value) {
+    return Row(
+      children: <Widget>[
+        Radio(
+          value: value,
+          groupValue: graduationType,
+          onChanged: (value) {
+            setState(() {
+              graduationType = value;
+            });
+          },
+        ),
+        Text(value)
+      ],
+    );
+  }
+
+  Widget getPersonalDetails() {
+    return Column(
+      children: <Widget>[
+        getTextField(
+            getLabelText(NAME), "", nameController, TextInputType.text),
+        getGender(),
+        getTextField(getLabelText(GUARDIAN_NAME), "",
+            guardianNameController, TextInputType.text),
+        getTextField(getLabelText(AADHAAR), "", aadhaarController,
+            TextInputType.number,maxLength: 12),
+        getTextField(getLabelText(QUALIFICATION), "",
+            qualificationController, TextInputType.text),
+        getTextField(getLabelText(OCCUPATION), "", occupationController,
+            TextInputType.text)
+      ],
+    );
+  }
+
+  Widget getAddressDetails() {
+    return Column(
+      children: <Widget>[
+        getTextField(getLabelText(HOUSE_NUMBER), "", houseNumberController,
+            TextInputType.phone),
+        getTextField(
+            getLabelText(STREET), "", streetController, TextInputType.text),
+        getTextField(
+            getLabelText(TOWN), "", townController, TextInputType.text),
+        getTextField(getLabelText(DISTRICT), "", districtController,
+            TextInputType.text),
+        getTextField(getLabelText(PIN_CODE), "", postalCodeController,
+            TextInputType.number,maxLength: 6),
+        getTextField(getLabelText(POLICE_STATION), "",
+            policeStationController, TextInputType.text),
+      ],
+    );
+  }
+
+  Widget getContactDetails() {
+    return Column(
+      children: <Widget>[
+        getTextField(
+            getLabelText(AGE), "", ageController, TextInputType.number),
+        getTextField(getLabelText(PHONE_NUMBER), "",
+            contactNumberController, TextInputType.phone,maxLength: 10),
+        getTextField(getLabelText(ALTERNATE_PHONE_NUMBER), "",
+            alternateNumberController, TextInputType.phone,maxLength: 10),
+        getTextField(getLabelText(EMAIL), "", emailIdController,
+            TextInputType.emailAddress),
+      ],
+    );
+  }
+
+  Widget getCollegeDetails() {
+    return Column(
+      children: <Widget>[
+        getTextField(getLabelText(COLLEGE), "", collegeController,
+            TextInputType.text),
+        getTextField(
+            getLabelText(YEAR), "", graduationYear, TextInputType.number),
+      ],
+    );
+  }
+
+  Widget getScannedCopies() {
+    return Column(
+      children: <Widget>[
+        getButtonAndImage("Upload Passport Size Photo",
+            "Upload Passport Size Photo Only!", PROFILE_PIC, _profilePic),
+        getDivider(),
+        getButtonAndImage("Upload Aadhaar", "Upload Aadhaar Scanned Copy",
+            AADHAR_COPY, _aadharCard),
+        getDivider(),
+        getButtonAndImage("Upload Voter ID", "Upload Voter Id Scanned Copy",
+            VOTER_ID, _voterId),
+        getDivider(),
+        getButtonAndImage(
+            "Upload Graduation Certificate",
+            "Upload Graduation Certificate Scanned Copy",
+            GRADUATION_CERTIFICATE,
+            _graduationCertificate),
+        getDivider(),
+        getButtonAndImage("Upload Signature", "Upload Your Signature",
+            SIGNATURE, _signature),
+      ],
+    );
   }
 }

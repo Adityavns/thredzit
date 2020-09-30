@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thredzit/survey.dart';
+import 'package:thredzit/Home.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,10 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.yellow,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: Home(),
     );
   }
 }

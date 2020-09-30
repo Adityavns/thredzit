@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "875258177571",
+    "firebase_url": "https://thredzit-fc129.firebaseio.com",
+    "project_id": "thredzit-fc129",
+    "storage_bucket": "thredzit-fc129.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875258177571:android:4179544f5c6590abdfa996",
+        "android_client_info": {
+          "package_name": "in.co.letmebuild.thredzit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875258177571-7h1io6f7a6hqmor7trdlgklaokjt9pnf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.co.letmebuild.thredzit",
+            "certificate_hash": "9c5e4b713a421632c6ffd36905b69d52612a17a3"
+          }
+        },
+        {
+          "client_id": "875258177571-4q1s5k1kbt2hp1dn8cd7pned48dt4fli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKC2fqLPXjEaOjEXSlAmIHS4ACkjbUvis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875258177571-4q1s5k1kbt2hp1dn8cd7pned48dt4fli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
