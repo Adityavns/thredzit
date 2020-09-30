@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Application{
     String name;
     String guardianName;
@@ -20,8 +22,36 @@ class Application{
     String aadharCardUrl;
     String certificatesUrl;
     String signatureUrl;
+    Timestamp registeredOn;
+    String applicationID;
 
-    Map<String,dynamic> toMap(){
+
+    Application(
+      this.name,
+      this.guardianName,
+      this.qualification,
+      this.occupation,
+      this.houseNumber,
+      this.street,
+      this.town,
+      this.postOffice,
+      this.policeStation,
+      this.district,
+      this.age,
+      this.primaryMobileNumber,
+      this.alternateMobileNumber,
+      this.emailId,
+      this.graduationCollege,
+      this.graduationYear,
+      this.photoUrl,
+      this.voterIdUrl,
+        this.aadharCardUrl,
+      this.certificatesUrl,
+      this.signatureUrl,
+      this.registeredOn ,
+        this.applicationID);
+
+  Map<String,dynamic> toMap(){
         Map<String,dynamic> map = new Map();
         map['name'] = this.name;
         map['guardianName'] = this.guardianName;
@@ -44,6 +74,8 @@ class Application{
         map['aadharCardUrl'] = this.aadharCardUrl;
         map['certificatesUrl'] = this.certificatesUrl;
         map['signatureUrl'] = this.signatureUrl;
+        map['applicationID'] = this.applicationID;
+        map['registeredOn'] = this.registeredOn;
         return map;
     }
 }

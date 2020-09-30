@@ -86,6 +86,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     );
   }
 
+
   Widget getBody() {
     return SingleChildScrollView(
       child: Padding(
@@ -183,14 +184,16 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         validator: (value) {
           if (labelText == "Email") {
             if (value.isEmpty)
-              return "Enter Email";
+              return null;
             else {
               if (!isValidEmail(value)) return "Enter valid email";
             }
-          } else if (labelText == "Phone Number" ||
-              labelText == "Alternate Phone Number") {
+          } else if (labelText == "Phone Number") {
             return validateMobile(value);
-          } else {
+          }else if(labelText=="Alternate Phone Number"){
+            return null;
+          }
+          else {
             if (value.isEmpty) {
               return 'Please enter some text';
             }
@@ -416,6 +419,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                         _graduationCertificate != null &&
                         _aadharCard != null &&
                         _signature != null) {
+                      showLoading(context);
                       bloc.enrollNewForm(
                           nameController.text,
                           guardianNameController.text,
@@ -611,6 +615,66 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         getButtonAndImage(
             "Upload Signature", "Upload Your Signature", SIGNATURE, _signature),
       ],
+    );
+  }
+
+
+  void showLoading(BuildContext context) async {
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content:Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          StreamBuilder<bool>(
+              stream: bloc.isLoading,
+              initialData: true,
+              builder: (context, snapshot) {
+                return snapshot.data
+                    ? Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Updating..."),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
+                )
+                    : Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Updated Successfully"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlatButton(
+                        color: Colors.yellow,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              }),
+        ],
+      )
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
                   color: Colors.yellow,
                   child: Text("Telugu"),
                   onPressed: () {
-                    gotoNewEnrolmentScreen("Telugu");
+                    gotoNewEnrolmentScreen("English");
                   },
                 ),
               ],
@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
   void gotoNewEnrolmentScreen(String selectedLanguage) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NewEnrollment(selectedLanguage)),
+      MaterialPageRoute(builder: (context) => new NewEnrollment(selectedLanguage)),
     );
   }
 }
