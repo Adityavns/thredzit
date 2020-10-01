@@ -61,7 +61,6 @@ class Bloc {
 
 
   Future<List<String>> uploadImages(List<File> imageFiles,String aadhaarNumber,String name) async {
-    int time = new DateTime.now().millisecondsSinceEpoch;
     List<String> _urlList = [];
     for(int i=0;i<imageFiles.length;i++){
       StorageReference reference =

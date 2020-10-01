@@ -46,7 +46,6 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   static const String GRADUATION_CERTIFICATE = "graduationCertificate";
   static const String SIGNATURE = "signature";
 
-  final picker = ImagePicker();
 
   bool voterId = true;
   TextEditingController nameController = new TextEditingController();
@@ -116,7 +115,9 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   }
 
   Future getImage(ImageSource source, String imageType) async {
-    final pickedFile = await picker.getImage(source: source);
+    ImagePicker imagePicker = new ImagePicker();
+    var _image = await imagePicker.getImage(source: source,imageQuality: 50);
+    final pickedFile = _image;
     setState(() {
       if (pickedFile != null) {
         switch (imageType) {
@@ -220,71 +221,71 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     switch (value) {
       case 1:
         {
-          return "Full Name";
+          return "Full Name*";
         }
       case 2:
         {
-          return "Father's/Mother's/Husband's name";
+          return "Father's/Mother's/Husband's name*";
         }
       case 3:
         {
-          return "Qualification";
+          return "Qualification*";
         }
       case 4:
         {
-          return "Aadhaar Number";
+          return "Aadhaar Number*";
         }
       case 5:
         {
-          return "Occupation";
+          return "Occupation*";
         }
       case 6:
         {
-          return "House Number";
+          return "House Number*";
         }
       case 7:
         {
-          return "Street";
+          return "Street*";
         }
       case 8:
         {
-          return "Town/Village";
+          return "Town/Village*";
         }
       case 9:
         {
-          return "District";
+          return "District*";
         }
       case 10:
         {
-          return "Postal Pin Code";
+          return "Postal Pin Code*";
         }
       case 11:
         {
-          return "Police Station/Tehsil/Taluka/Mouza";
+          return "Police Station/Tehsil/Taluka/Mouza Name*";
         }
       case 12:
         {
-          return "Age";
+          return "Age*";
         }
       case 13:
         {
-          return "Phone Number";
+          return "Phone Number*";
         }
       case 14:
         {
-          return "Alternate Phone Number";
+          return "Alternate Phone Number(Optional)";
         }
       case 15:
         {
-          return "Email";
+          return "Email(Optional)";
         }
       case 16:
         {
-          return "Graduation College";
+          return "Graduation College*";
         }
       case 17:
         {
-          return "Graduation Year";
+          return "Graduation Year*";
         }
       default:
         {
@@ -433,7 +434,6 @@ class _NewEnrollmentState extends State<NewEnrollment> {
               : () {
                   if (_formKey.currentState.validate()) {
                     if (_profilePic != null &&
-                        _voterId != null &&
                         _graduationCertificate != null &&
                         _aadharCard != null &&
                         _signature != null) {
@@ -482,20 +482,25 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   }
 
   Widget getGender() {
-    return Row(
-      children: <Widget>[
-        Text(
-          "Gender",
-          style: TextStyle(fontSize: 15),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            getGenders("Male"),
-            getGenders("Female"),
-          ],
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top:8.0),
+      child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Gender",
+                style: TextStyle(fontSize: 15),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  getGenders("Male"),
+                  getGenders("Female"),
+                  getGenders("Others")
+                ],
+              ),
+            ],
+          ),
     );
   }
 
@@ -594,7 +599,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     return Column(
       children: <Widget>[
         getTextField(
-            getLabelText(AGE), "", ageController, TextInputType.number),
+            getLabelText(AGE), "", ageController, TextInputType.number,maxLength: 2),
         getTextField(getLabelText(PHONE_NUMBER), "", contactNumberController,
             TextInputType.phone,
             maxLength: 10),
@@ -613,7 +618,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         getTextField(
             getLabelText(COLLEGE), "", collegeController, TextInputType.text),
         getTextField(
-            getLabelText(YEAR), "", graduationYear, TextInputType.number),
+            getLabelText(YEAR), "", graduationYear, TextInputType.number,maxLength: 4),
       ],
     );
   }
@@ -622,22 +627,22 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     return Column(
       children: <Widget>[
         getButtonAndImage("Upload Passport Size Photo",
-            "Upload Passport Size Photo Only!", PROFILE_PIC, _profilePic),
+            "Upload Passport Size Photo Only*!", PROFILE_PIC, _profilePic),
         getDivider(),
-        getButtonAndImage("Upload Aadhaar", "Upload Aadhaar Scanned Copy",
+        getButtonAndImage("Upload Aadhaar", "Upload Aadhaar Scanned Copy*",
             AADHAAR_COPY, _aadharCard),
         getDivider(),
-        getButtonAndImage("Upload Voter ID", "Upload Voter Id Scanned Copy",
+        getButtonAndImage("Upload Voter ID", "Upload Voter Id Scanned Copy (If any)",
             VOTER_ID, _voterId),
         getDivider(),
         getButtonAndImage(
             "Upload Graduation Certificate",
-            "Upload Graduation Certificate Scanned Copy",
+            "Upload Graduation Certificate Scanned Copy*",
             GRADUATION_CERTIFICATE,
             _graduationCertificate),
         getDivider(),
         getButtonAndImage(
-            "Upload Signature", "Upload Your Signature", SIGNATURE, _signature),
+            "Upload Signature", "Upload Your Signature*", SIGNATURE, _signature),
       ],
     );
   }
