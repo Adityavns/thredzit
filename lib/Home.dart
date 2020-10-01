@@ -39,37 +39,37 @@ class _HomeState extends State<Home> {
                 FlatButton(
                   color: Colors.yellow,
                   onPressed: () {
-                    gotoNewEnrolmentScreen("English");
+                    gotoNewEnrolmentScreen();
                   },
-                  child: Text("English"),
+                  child: Text("New Enrollment"),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.yellow,
-                  child: Text("Telugu"),
-                  onPressed: () {
-                    gotoNewEnrolmentScreen("English");
-                  },
-                ),
-              ],
-            ),
-          )
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.stretch,
+          //     children: <Widget>[
+          //       FlatButton(
+          //         color: Colors.yellow,
+          //         child: Text("Telugu"),
+          //         onPressed: () {
+          //           gotoNewEnrolmentScreen("English");
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // )
         ],
       ),
     );
   }
 
-  void gotoNewEnrolmentScreen(String selectedLanguage) {
+  void gotoNewEnrolmentScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => new NewEnrollment(selectedLanguage)),
+      MaterialPageRoute(builder: (context) => new NewEnrollment()),
     );
   }
 }

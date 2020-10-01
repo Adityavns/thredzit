@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:thredzit/bloc.dart';
 
 class NewEnrollment extends StatefulWidget {
-  final String selectedLanguage;
-  NewEnrollment(this.selectedLanguage);
+
 
   @override
   _NewEnrollmentState createState() => _NewEnrollmentState();
@@ -73,6 +73,8 @@ class _NewEnrollmentState extends State<NewEnrollment> {
 
   var graduationType = "Degree";
 
+  bool enrolled = false;
+
   /*TextEditingController mobileNumberController = new TextEditingController();
   TextEditingController alternativeMobileNumberController =
       new TextEditingController();*/
@@ -85,7 +87,6 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       body: getBody(),
     );
   }
-
 
   Widget getBody() {
     return SingleChildScrollView(
@@ -190,10 +191,9 @@ class _NewEnrollmentState extends State<NewEnrollment> {
             }
           } else if (labelText == "Phone Number") {
             return validateMobile(value);
-          }else if(labelText=="Alternate Phone Number"){
+          } else if (labelText == "Alternate Phone Number") {
             return null;
-          }
-          else {
+          } else {
             if (value.isEmpty) {
               return 'Please enter some text';
             }
@@ -220,81 +220,71 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     switch (value) {
       case 1:
         {
-          return widget.selectedLanguage == "English" ? "Full Name" : "";
+          return "Full Name";
         }
       case 2:
         {
-          return widget.selectedLanguage == "English"
-              ? "Father's/Mother's/Husband's name"
-              : "";
+          return "Father's/Mother's/Husband's name";
         }
       case 3:
         {
-          return widget.selectedLanguage == "English" ? "Qualification" : "";
+          return "Qualification";
         }
       case 4:
         {
-          return widget.selectedLanguage == "English" ? "Aadhaar Number" : "";
+          return "Aadhaar Number";
         }
       case 5:
         {
-          return widget.selectedLanguage == "English" ? "Occupation" : "";
+          return "Occupation";
         }
       case 6:
         {
-          return widget.selectedLanguage == "English" ? "House Number" : "";
+          return "House Number";
         }
       case 7:
         {
-          return widget.selectedLanguage == "English" ? "Street" : "";
+          return "Street";
         }
       case 8:
         {
-          return widget.selectedLanguage == "English" ? "Town/Village" : "";
+          return "Town/Village";
         }
       case 9:
         {
-          return widget.selectedLanguage == "English" ? "District" : "";
+          return "District";
         }
       case 10:
         {
-          return widget.selectedLanguage == "English" ? "Postal Pin Code" : "";
+          return "Postal Pin Code";
         }
       case 11:
         {
-          return widget.selectedLanguage == "English"
-              ? "Police Station/Tehsil/Taluka/Mouza"
-              : "";
+          return "Police Station/Tehsil/Taluka/Mouza";
         }
       case 12:
         {
-          return widget.selectedLanguage == "English" ? "Age" : "";
+          return "Age";
         }
       case 13:
         {
-          return widget.selectedLanguage == "English" ? "Phone Number" : "";
+          return "Phone Number";
         }
       case 14:
         {
-          return widget.selectedLanguage == "English"
-              ? "Alternate Phone Number"
-              : "";
+          return "Alternate Phone Number";
         }
       case 15:
         {
-          return widget.selectedLanguage == "English" ? "Email" : "";
+          return "Email";
         }
       case 16:
         {
-          return widget.selectedLanguage == "English"
-              ? "Graduation College"
-              : "గ్రాడ్యుయేషన్ కళాశాల";
+          return "Graduation College";
         }
       case 17:
         {
-          return widget.selectedLanguage == "English"
-              ? "Graduation Year"
-              : "పట్టభద్రతపొందు సంవత్సరం";
+          return "Graduation Year";
         }
       default:
         {
@@ -377,6 +367,34 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     );
   }
 
+  void showAlertDialogForResubmission(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Warning!"),
+      content: Text("Already enrolled with this details!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   void showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -419,6 +437,11 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                         _graduationCertificate != null &&
                         _aadharCard != null &&
                         _signature != null) {
+                      if (enrolled) {
+                        showAlertDialogForResubmission(context);
+                        return;
+                      }
+                      enrolled = true;
                       showLoading(context);
                       bloc.enrollNewForm(
                           nameController.text,
@@ -438,6 +461,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                           graduationType,
                           graduationYear.text,
                           gender,
+                          aadhaarController.text,
                           _profilePic,
                           _aadharCard,
                           _voterId,
@@ -618,56 +642,54 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     );
   }
 
-
   void showLoading(BuildContext context) async {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      content:Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          StreamBuilder<bool>(
-              stream: bloc.isLoading,
-              initialData: true,
-              builder: (context, snapshot) {
-                return snapshot.data
-                    ? Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Updating..."),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  ],
-                )
-                    : Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Updated Successfully"),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FlatButton(
-                        color: Colors.yellow,
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(),
+        content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StreamBuilder<bool>(
+            stream: bloc.isLoading,
+            initialData: true,
+            builder: (context, snapshot) {
+              return snapshot.data
+                  ? Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Updating..."),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
                     )
-                  ],
-                );
-              }),
-        ],
-      )
-    );
+                  : Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Updated Successfully"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FlatButton(
+                            color: Colors.yellow,
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Ok",
+                              style: TextStyle(),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+            }),
+      ],
+    ));
 
     // show the dialog
     showDialog(

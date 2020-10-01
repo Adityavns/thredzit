@@ -36,11 +36,15 @@ dependencies:
   firebase_core: ^0.5.0
   cloud_firestore: ^0.14.0+2
   rxdart: ^0.24.1
+  get: ^3.12.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+
+flutter_localizations: # added
+  sdk: flutter
 
 
 

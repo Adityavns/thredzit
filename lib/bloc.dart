@@ -37,6 +37,7 @@ class Bloc {
       String graduationCollege,
       String graduationYear,
       String gender,
+      String aadhaarNumber,
       File profilePic,
       File aadharCard,
       File voterId,
@@ -49,22 +50,22 @@ class Bloc {
     list.add(aadharCard);
     list.add(graduationCertificate);
     list.add(signature);
-    List<String> urls = await uploadImages(list);
+    List<String> urls = await uploadImages(list,aadhaarNumber,name);
     Application application =  new Application(name, guardianName, qualification,
         occupation, houseNumber, street, town, postOffice, policeStation, district, age, primaryMobileNumber,
-        alternateMobileNumber, emailId, graduationCollege, graduationYear,
+        alternateMobileNumber, emailId, graduationCollege, graduationYear,aadhaarNumber,
         urls.elementAt(0), urls.elementAt(1), urls.elementAt(2), urls.elementAt(3), urls.elementAt(4),Timestamp.now(),DateTime.now().millisecondsSinceEpoch.toString());
         await FirebaseFirestore.instance.collection("applications").add(application.toMap());
         updateLoading(false);
   }
 
 
-  Future<List<String>> uploadImages(List<File> imageFiles) async {
+  Future<List<String>> uploadImages(List<File> imageFiles,String aadhaarNumber,String name) async {
     int time = new DateTime.now().millisecondsSinceEpoch;
     List<String> _urlList = [];
     for(int i=0;i<imageFiles.length;i++){
       StorageReference reference =
-      FirebaseStorage.instance.ref().child(time.toString()).child(i.toString());
+      FirebaseStorage.instance.ref().child(aadhaarNumber+name).child(i.toString());
       StorageUploadTask uploadTask = reference.putFile(imageFiles.elementAt(i));
       StorageTaskSnapshot downloadUrl = await uploadTask.onComplete;
       String _url = await downloadUrl.ref.getDownloadURL();

@@ -17,6 +17,7 @@ class Application{
     String emailId;
     String graduationCollege;
     String graduationYear;
+    String aadhaarNumber;
     String photoUrl;
     String voterIdUrl;
     String aadharCardUrl;
@@ -43,6 +44,7 @@ class Application{
       this.emailId,
       this.graduationCollege,
       this.graduationYear,
+      this.aadhaarNumber,
       this.photoUrl,
       this.voterIdUrl,
         this.aadharCardUrl,
@@ -69,6 +71,7 @@ class Application{
         map['emailId'] = this.emailId;
         map['graduationCollege'] = this.graduationCollege;
         map['graduationYear'] = this.graduationYear;
+        map['aadhaarNumber'] = this.aadhaarNumber;
         map['photoUrl'] = this.photoUrl;
         map['voterIdUrl'] = this.voterIdUrl;
         map['aadharCardUrl'] = this.aadharCardUrl;
