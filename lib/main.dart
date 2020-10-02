@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-//import 'package:get/route_manager.dart';
 import 'package:thredzit/Home.dart';
-//import 'package:thredzit/Messages.dart';
+import 'package:thredzit/SplashScreen.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.yellow,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(),
+      home: SplashScreen(),
     );
   }
 }
