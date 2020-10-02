@@ -37,12 +37,16 @@ dependencies:
   cloud_firestore: ^0.14.0+2
   rxdart: ^0.24.1
   permission_handler: ^5.0.1+1
+  fluttertoast: ^7.1.1
 
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+
+
 
 
 flutter_localizations: # added
@@ -55,7 +59,7 @@ flutter_localizations: # added
 # The following section is specific to Flutter.
 flutter:
   assets:
-  - assets/thredzit.png
+  - assets/ic_launcher.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

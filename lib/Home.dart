@@ -18,49 +18,75 @@ class _HomeState extends State<Home> {
   }
 
   Widget getBody() {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Electoral Roll for a graduate's Constituency",style:TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Start New Enrollment By Selecting the Language"),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FlatButton(
+                Text("Electoral Roll for a Graduate's Constituency",style:TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+                Padding(
+                  padding: const EdgeInsets.only(top:20),
+                  child: FlatButton(
+                    color: Colors.yellow,
+                    onPressed: () {
+                      gotoNewEnrolmentScreen();
+                    },
+                    child: Text("New Enrollment"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Powered By ThredzIT Solutions",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+          )
+        ],
+      ),
+    );
+
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(child: Text("Electoral Roll for a Graduate's Constituency",style:TextStyle(fontSize: 26,fontWeight: FontWeight.bold),)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FlatButton(
                   color: Colors.yellow,
                   onPressed: () {
                     gotoNewEnrolmentScreen();
                   },
                   child: Text("New Enrollment"),
                 ),
-              ],
-            ),
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     children: <Widget>[
+              //       FlatButton(
+              //         color: Colors.yellow,
+              //         child: Text("Telugu"),
+              //         onPressed: () {
+              //           gotoNewEnrolmentScreen("English");
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // )
+            ],
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.stretch,
-          //     children: <Widget>[
-          //       FlatButton(
-          //         color: Colors.yellow,
-          //         child: Text("Telugu"),
-          //         onPressed: () {
-          //           gotoNewEnrolmentScreen("English");
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );

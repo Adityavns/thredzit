@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:thredzit/bloc.dart';
@@ -149,20 +150,25 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: Text("Upload Profile Pic"),
+            title: Text("Upload File using"),
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  RaisedButton(
-                    onPressed: () => getImage(ImageSource.camera, imageType),
-                    child: Text("Camera"),
-                  ),
-                  RaisedButton(
-                    onPressed: () => getImage(ImageSource.gallery, imageType),
-                    child: Text("Gallery"),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    RaisedButton(
+                      color:Colors.yellow,
+                      onPressed: () => getImage(ImageSource.camera, imageType),
+                      child: Text("Camera"),
+                    ),
+                    RaisedButton(
+                      color: Colors.yellow,
+                      onPressed: () => getImage(ImageSource.gallery, imageType),
+                      child: Text("Gallery"),
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -176,6 +182,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: new TextFormField(
         keyboardType: type,
+        textCapitalization: type==TextInputType.text?TextCapitalization.words:TextCapitalization.none,
         maxLength: maxLength,
         decoration: InputDecoration(
           labelText: labelText,
@@ -184,7 +191,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
           hintStyle: TextStyle(fontSize: 15.0, color: Colors.black45),
         ),
         validator: (value) {
-          if (labelText == "Email") {
+          if (labelText == "Email(Optional)") {
             if (value.isEmpty)
               return null;
             else {
@@ -192,7 +199,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
             }
           } else if (labelText == "Phone Number") {
             return validateMobile(value);
-          } else if (labelText == "Alternate Phone Number") {
+          } else if (labelText == "Alternate Phone Number(Optional)") {
             return null;
           } else {
             if (value.isEmpty) {
@@ -371,7 +378,8 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   void showAlertDialogForResubmission(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      color: Colors.yellow,
+      child: Text("OK",style: TextStyle(color: Colors.black),),
       onPressed: () {
         Navigator.pop(context);
         Navigator.pop(context);
@@ -470,6 +478,8 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                     } else {
                       showAlertDialog(context);
                     }
+                  }else{
+                    Fluttertoast.showToast(msg: "Enter all details");
                   }
                 },
           child: Text(
