@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:875258177571:android:ca6d25dc09ca24d2dfa996",
+        "android_client_info": {
+          "package_name": "in.co.letmebuild.mlcvoter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875258177571-adk0l57rksrb290g9aend41qpea7g1np.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.co.letmebuild.mlcvoter",
+            "certificate_hash": "9c5e4b713a421632c6ffd36905b69d52612a17a3"
+          }
+        },
+        {
+          "client_id": "875258177571-4q1s5k1kbt2hp1dn8cd7pned48dt4fli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKC2fqLPXjEaOjEXSlAmIHS4ACkjbUvis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875258177571-4q1s5k1kbt2hp1dn8cd7pned48dt4fli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:875258177571:android:4179544f5c6590abdfa996",
         "android_client_info": {
           "package_name": "in.co.letmebuild.thredzit"

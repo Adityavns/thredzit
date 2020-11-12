@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -83,6 +84,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     return Scaffold(
       appBar: AppBar(
         title: Text("New Enrollment"),
+        backgroundColor: new Color.fromRGBO(255, 208, 17, 1),
       ),
       body: getBody(),
     );
@@ -158,12 +160,12 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     RaisedButton(
-                      color:Colors.yellow,
+                      color:new Color.fromRGBO(255, 208, 17, 1),
                       onPressed: () => getImage(ImageSource.camera, imageType),
                       child: Text("Camera"),
                     ),
                     RaisedButton(
-                      color: Colors.yellow,
+                      color: new Color.fromRGBO(255, 208, 17, 1),
                       onPressed: () => getImage(ImageSource.gallery, imageType),
                       child: Text("Gallery"),
                     ),
@@ -319,7 +321,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       String buttonTitle, String textTitle, String imageType, File file) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.yellow, width: 5),
+        border: Border.all(color: new Color.fromRGBO(255, 208, 17, 1), width: 5),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -343,7 +345,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                     ),
                   ),
             FlatButton(
-              color: Colors.yellow,
+              color: new Color.fromRGBO(255, 208, 17, 1),
               child: Text(buttonTitle),
               onPressed: () {
                 getDialog(imageType);
@@ -378,7 +380,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
   void showAlertDialogForResubmission(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
-      color: Colors.yellow,
+      color:new Color.fromRGBO(255, 208, 17, 1),
       child: Text("OK",style: TextStyle(color: Colors.black),),
       onPressed: () {
         Navigator.pop(context);
@@ -404,10 +406,11 @@ class _NewEnrollmentState extends State<NewEnrollment> {
     );
   }
 
-  void showAlertDialog(BuildContext context) {
+  void showAlertDialog(BuildContext context,String title, String msg) {
     // set up the button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      color: new Color.fromRGBO(255, 208, 17, 1),
+      child: Text("OK",style: TextStyle(color: Colors.black),),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -415,8 +418,8 @@ class _NewEnrollmentState extends State<NewEnrollment> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Warning!"),
-      content: Text("Upload all the Certificates"),
+      title: Text(title),
+      content: Text(msg),
       actions: [
         okButton,
       ],
@@ -436,47 +439,53 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         RaisedButton(
-          color: Colors.yellow,
+          color: new Color.fromRGBO(255, 208, 17, 1),
           onPressed: !checkedValue
               ? null
-              : () {
+              : () async {
                   if (_formKey.currentState.validate()) {
                     if (_profilePic != null &&
                         _graduationCertificate != null &&
                         _aadharCard != null &&
                         _signature != null) {
-                      if (enrolled) {
-                        showAlertDialogForResubmission(context);
-                        return;
+                      bool internetAvailable = await isInternetAvailable();
+                      if(internetAvailable){
+                        if (enrolled) {
+                          showAlertDialogForResubmission(context);
+                          return;
+                        }
+                        enrolled = true;
+                        showLoading(context);
+                        bloc.enrollNewForm(
+                            nameController.text,
+                            guardianNameController.text,
+                            qualificationController.text,
+                            occupationController.text,
+                            houseNumberController.text,
+                            streetController.text,
+                            townController.text,
+                            postalCodeController.text,
+                            policeStationController.text,
+                            districtController.text,
+                            ageController.text,
+                            contactNumberController.text,
+                            alternateNumberController.text,
+                            emailIdController.text,
+                            graduationType,
+                            graduationYear.text,
+                            gender,
+                            aadhaarController.text,
+                            _profilePic,
+                            _aadharCard,
+                            _voterId,
+                            _graduationCertificate,
+                            _signature,
+                        );
+                      }else {
+                        showAlertDialog(context,"No Network!","Check your Network and try again");
                       }
-                      enrolled = true;
-                      showLoading(context);
-                      bloc.enrollNewForm(
-                          nameController.text,
-                          guardianNameController.text,
-                          qualificationController.text,
-                          occupationController.text,
-                          houseNumberController.text,
-                          streetController.text,
-                          townController.text,
-                          postalCodeController.text,
-                          policeStationController.text,
-                          districtController.text,
-                          ageController.text,
-                          contactNumberController.text,
-                          alternateNumberController.text,
-                          emailIdController.text,
-                          graduationType,
-                          graduationYear.text,
-                          gender,
-                          aadhaarController.text,
-                          _profilePic,
-                          _aadharCard,
-                          _voterId,
-                          _graduationCertificate,
-                          _signature);
                     } else {
-                      showAlertDialog(context);
+                      showAlertDialog(context,"Warning!","Upload all the Certificates");
                     }
                   }else{
                     Fluttertoast.showToast(msg: "Enter all details");
@@ -519,6 +528,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
       children: <Widget>[
         Radio(
           value: value,
+          activeColor: new Color.fromRGBO(255, 208, 17, 1),
           groupValue: gender,
           onChanged: (value) {
             setState(() {
@@ -663,11 +673,71 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        StreamBuilder<bool>(
+        StreamBuilder<int>(
             stream: bloc.isLoading,
-            initialData: true,
+            initialData: 1,
             builder: (context, snapshot) {
-              return snapshot.data
+              if(snapshot.data==1){
+               return Column(
+                 children: <Widget>[
+                   Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: Text("Updating..."),
+                   ),
+                   Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: CircularProgressIndicator(),
+                   ),
+                 ],
+               );
+              }else if(snapshot.data==2){
+               return Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Updated Successfully"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlatButton(
+                        color: new Color.fromRGBO(255, 208, 17, 1),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              }else{
+                return Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Something Went Wrong please try again later"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FlatButton(
+                        color: new Color.fromRGBO(255, 208, 17, 1),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              }
+              /*return snapshot.data
                   ? Column(
                       children: <Widget>[
                         Padding(
@@ -689,7 +759,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: FlatButton(
-                            color: Colors.yellow,
+                            color: new Color.fromRGBO(255, 208, 17, 1),
                             onPressed: () {
                               Navigator.pop(context);
                               Navigator.pop(context);
@@ -701,7 +771,7 @@ class _NewEnrollmentState extends State<NewEnrollment> {
                           ),
                         )
                       ],
-                    );
+                    );*/
             }),
       ],
     ));
@@ -713,5 +783,21 @@ class _NewEnrollmentState extends State<NewEnrollment> {
         return alert;
       },
     );
+  }
+
+  Future<bool> isInternetAvailable() async{
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+     return false;
+    }
+    return true;
+  }
+
+  void onError() {
+
+  }
+
+  void onSuccess(){
+
   }
 }
