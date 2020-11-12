@@ -39,10 +39,17 @@ dependencies:
   permission_handler: ^5.0.1+1
   fluttertoast: ^7.1.1
   connectivity: ^0.4.9+5
+  paginate_firestore: ^0.2.2
+  json_serializable: ^3.5.0
+  intl: ^0.16.1
+
+
 
 
 
 dev_dependencies:
+  build_runner: ^1.10.3
+
   flutter_test:
     sdk: flutter
 
